@@ -17,6 +17,58 @@
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
+        /* 💌 仪式感爆棚的“开启信封”遮罩层 */
+        #welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffe3e3 0%, #ffcbd7 100%);
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            text-align: center;
+            padding: 20px;
+        }
+        .envelope-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(216, 90, 127, 0.2);
+            max-width: 450px;
+            width: 100%;
+            border: 2px dashed #d85a7f;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        .envelope-text {
+            font-size: 1.4rem;
+            color: #d85a7f;
+            font-weight: bold;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            line-height: 1.6;
+        }
+        .open-btn {
+            background-color: #d85a7f;
+            color: white;
+            padding: 12px 40px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(216, 90, 127, 0.4);
+            font-weight: bold;
+        }
+
+        /* 背景音乐控制按钮 */
         .music-btn {
             position: fixed;
             top: 20px;
@@ -39,6 +91,7 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
+        /* 满屏区块通用样式 */
         .section {
             min-height: 100vh;
             display: flex;
@@ -168,6 +221,51 @@
             color: #d85a7f;
             margin-bottom: 8px;
         }
+
+        /* 📸 复古拍立得照片墙样式 */
+        .photo-section {
+            background-color: #ffffff;
+            width: 100%;
+        }
+        .photo-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .photo-item {
+            background: white;
+            padding: 12px 12px 35px 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+            transform: rotate(var(--r));
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 260px;
+            width: 100%;
+            border: 1px solid #f0f0f0;
+        }
+        .photo-item:hover {
+            transform: rotate(0deg) scale(1.08);
+            box-shadow: 0 12px 30px rgba(216, 90, 127, 0.25);
+            z-index: 10;
+        }
+        .photo-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 2px;
+            display: block;
+        }
+        .photo-caption {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #555;
+            font-family: '楷体', 'STKaiti', serif;
+            font-weight: bold;
+        }
+
         .proposal-section {
             background: linear-gradient(135deg, #ffffff 0%, #ffe3e3 100%);
         }
@@ -228,213 +326,4 @@
             padding: 40px;
             border-radius: 15px;
             text-align: center;
-            max-width: 400px;
-            width: 85%;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-            position: relative;
-        }
-        .modal-title {
-            font-size: 1.8rem;
-            color: #d85a7f;
-            margin-bottom: 15px;
-        }
-        #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-        }
-    </style>
-</head>
-<body>
-
-    <audio id="bgm" src="./bgm.mp3" loop></audio>
-    <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
-
-    <canvas id="particles-canvas"></canvas>
-
-    <div class="section hero-section" id="sec1">
-        <h1 class="hero-title">Hey,Lumina 见字如面 ❤</h1>
-        <p class="hero-subtitle">有些深藏在代码里的浪漫，今天只想写给你听。</p>
-        <div class="scroll-hint" onclick="document.getElementById('sec2').scrollIntoView();">向下滑动 往下翻页 ↓</div>
-    </div>
-
-    <div class="section timer-section" id="sec2">
-        <h2 class="section-title">这是我们相恋的时光</h2>
-        <p style="color: #7d7d7d; margin-bottom: 20px;">从执手的那天起，时间便有了更温柔的意义：</p>
-        <div class="timer-container">
-            <div class="time-box"><span class="time-num" id="d">00</span><span class="time-unit">天</span></div>
-            <div class="time-box"><span class="time-num" id="h">00</span><span class="time-unit">时</span></div>
-            <div class="time-box"><span class="time-num" id="m">00</span><span class="time-unit">分</span></div>
-            <div class="time-box"><span class="time-num" id="s">00</span><span class="time-unit">秒</span></div>
-        </div>
-        <div class="scroll-hint" onclick="document.getElementById('sec3').scrollIntoView();" style="position:static; margin-top:50px;">继续向下滚动 ↓</div>
-    </div>
-
-    <div class="section timeline-section" id="sec3">
-        <h2 class="section-title">时光长廊</h2>
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-date">2025年 4月 7日</div>
-                    <p>这一天，我们的故事悄然落笔。那一天的萤火虫很亮，而你的笑容比阳光还要耀眼。</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-date">美好的回忆</div>
-                    <p>陪你走过四季交替，牵着你的手走过熟悉的街道，每一刻我都无比确定，我想陪你走过余生的每一段路。</p>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-date">今天</div>
-                    <p>平淡的日子因为有你而变得闪闪发光，想和你一起把每一个“今天”变成美好的“昨天”。</p>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-hint" onclick="document.getElementById('sec4').scrollIntoView();" style="position:static; margin-top:30px;">最后一步 ↓</div>
-    </div>
-
-    <div class="section proposal-section" id="sec4">
-        <div class="proposal-card">
-            <h2 class="hero-title" style="font-size: 2rem;">最重要的一页</h2>
-            <p style="line-height: 1.8; color: #555; font-size: 1.05rem;">
-                世界很大，人潮汹涌。<br>
-                但何其幸运，能够遇见你、陪伴你、爱着你。<br>
-                未来的路，我想牵着你的手，一起去看更多的风景。<br>
-                <strong style="color: #d85a7f; display:block; margin-top:15px; font-size: 1.2rem;">你愿意嫁给我吗？</strong>
-            </p>
-            <div class="btn-group">
-                <button class="btn btn-yes" onclick="acceptProposal()">我愿意 ❤</button>
-                <button class="btn btn-no" id="nobtn" onmouseover="flyAway()" onclick="flyAway()">考虑一下</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <h3 class="modal-title">🎉 耶！！</h3>
-            <p style="font-size: 1.1rem; line-height: 1.6; color: #444;">
-                谢谢你愿意包容我的笨拙与浪漫！<br>
-                我已经准备好了余生的守护与戒指，<br>
-                快抬头看看我吧！✨
-            </p>
-        </div>
-    </div>
-
-    <script>
-        /* 1. 恋爱计时器逻辑 (已精准定位到 2025年4月7日) */
-        const startDate = new Date('2025-04-07T00:00:00');
-        
-        function updateTimer() {
-            const now = new Date();
-            const diff = now - startDate;
-            
-            const days = Math.floor(diff / (1000 * 60 * 60 * 25));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 25)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            document.getElementById('d').innerText = days < 10 ? '0' + days : days;
-            document.getElementById('h').innerText = hours < 10 ? '0' + hours : hours;
-            document.getElementById('m').innerText = minutes < 10 ? '0' + minutes : minutes;
-            document.getElementById('s').innerText = seconds < 10 ? '0' + seconds : seconds;
-        }
-        setInterval(updateTimer, 1000);
-        updateTimer();
-
-        function toggleMusic() {
-            const audio = document.getElementById('bgm');
-            const btn = document.getElementById('musicBtn');
-            if (audio.paused) {
-                audio.play().catch(e => console.log("等待交互触发"));
-                btn.style.animationPlayState = 'running';
-            } else {
-                audio.pause();
-                btn.style.animationPlayState = 'paused';
-            }
-        }
-
-        function flyAway() {
-            const btn = document.getElementById('nobtn');
-            const x = Math.random() * 160 - 80;
-            const y = Math.random() * 80 - 40;
-            btn.style.transform = `translate(${x}px, ${y}px)`;
-        }
-
-        function acceptProposal() {
-            document.getElementById('successModal').style.display = 'flex';
-            startConfetti();
-        }
-
-        const canvas = document.getElementById('particles-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height - canvas.height;
-                this.size = Math.random() * 8 + 5;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1.5 + 1;
-                this.color = `rgba(216, 90, 127, ${Math.random() * 0.4 + 0.2})`;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.y > canvas.height) {
-                    this.y = -10;
-                    this.x = Math.random() * canvas.width;
-                }
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.bezierCurveTo(this.x - this.size/2, this.y - this.size/2, this.x - this.size, this.y + this.size/3, this.x, this.y + this.size);
-                ctx.bezierCurveTo(this.x + this.size, this.y + this.size/3, this.x + this.size/2, this.y - this.size/2, this.x, this.y);
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < 40; i++) {
-            particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        let isConfetti = false;
-        function startConfetti() {
-            if(isConfetti) return;
-            isConfetti = true;
-            for (let i = 0; i < 150; i++) {
-                let p = new Particle();
-                p.y = Math.random() * canvas.height;
-                p.speedY = Math.random() * 3 + 2;
-                p.speedX = Math.random() * 6 - 3;
-                particles.push(p);
-            }
-        }
-    </script>
-</body>
-</html>
+            max-width: 400
