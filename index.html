@@ -163,45 +163,75 @@
         .timeline-content { padding: 20px; background-color: white; position: relative; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .timeline-date { font-weight: bold; color: #d85a7f; margin-bottom: 8px; }
         
-        /* 📸 大图版照片墙样式 */
-        .photo-section { background-color: #ffffff; width: 100%; }
-        .photo-grid { display: flex; justify-content: center; align-items: center; gap: 35px; flex-wrap: wrap; max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        /* 🎬 核心重构：虚化巨幕电影感照片墙 */
+        .photo-section { 
+            background-color: #1a1a1a; 
+            width: 100%; 
+            position: relative; 
+            overflow: hidden;
+        }
         
-        /* ✨ 照片赋予动态漂浮动画效果 */
+        /* 🌌 动态大图虚化背景层 */
+        .photo-blur-bg {
+            position: absolute;
+            top: -10%; left: -10%; width: 120%; height: 120%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(40px) brightness(0.5); /* 强力模糊并调暗，突出中央照片 */
+            transition: background-image 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 🎞 中央滑动容器 */
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 480px;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 单个拍立得照片卡片 */
         .photo-item { 
             background: white; 
             padding: 16px 16px 32px 16px; 
-            box-shadow: 0 6px 20px rgba(0,0,0,0.07); 
-            transform: rotate(var(--r, 0deg)) translateY(0); 
-            /* 使用带有贝塞尔曲线的过渡，让摆动动画过渡更丝滑 */
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); 
-            max-width: 420px; 
-            width: 100%; 
-            border: 1px solid #f2eedb; 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); 
+            border-radius: 4px;
+            max-width: 430px; 
+            width: 90%; 
+            border: 1px solid rgba(255,255,255,0.2);
             cursor: pointer;
-            position: relative;
-            /* 绑定温柔漂浮呼吸动画，动画时长和延迟由 JS 无序赋予，避免动作完全整齐划一 */
-            animation: photoFloat var(--float-time, 4s) ease-in-out infinite alternate;
-            animation-delay: var(--float-delay, 0s);
-        }
-        
-        /* 浮动晃动动画微调效果 */
-        @keyframes photoFloat {
-            0% { transform: rotate(var(--r, 0deg)) translateY(0px) translateX(0px); }
-            50% { transform: rotate(calc(var(--r, 0deg) + 0.8deg)) translateY(-6px) translateX(2px); }
-            100% { transform: rotate(calc(var(--r, 0deg) - 0.8deg)) translateY(-12px) translateX(-2px); }
+            position: absolute;
+            
+            /* 初始状态处于隐藏和右侧待命 */
+            opacity: 0;
+            transform: translateX(100px) scale(0.9) rotate(4deg);
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* 鼠标悬停交互：动画暂停、放正、放大、加深阴影 */
-        .photo-item:hover { 
-            animation-play-state: paused; /* 鼠标放上去时暂停晃动，方便看清 */
-            transform: rotate(0deg) scale(1.06) translateY(-5px); 
-            box-shadow: 0 20px 38px rgba(216, 90, 127, 0.22); 
-            z-index: 10; 
+        /* ✨ 激活（当前显示）状态：滑入正中央 */
+        .photo-item.active {
+            opacity: 1;
+            transform: translateX(0) scale(1) rotate(-1deg);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        /* 往左滑出状态 */
+        .photo-item.exit {
+            opacity: 0;
+            transform: translateX(-100px) scale(0.9) rotate(-6deg);
+            pointer-events: none;
+            z-index: 1;
         }
         
         .photo-item img { width: 100%; height: 320px; object-fit: cover; border-radius: 2px; display: block; }
-        .photo-caption { margin-top: 16px; font-size: 1.05rem; color: #555; font-family: '楷体', 'STKaiti', serif; }
+        .photo-caption { margin-top: 16px; font-size: 1.1rem; color: #444; font-family: '楷体', 'STKaiti', serif; text-align: center; }
         
         /* 🔍 照片放大灯箱弹窗 */
         .lightbox {
@@ -298,10 +328,15 @@
     </div>
 
     <div class="section photo-section" id="sec-photo">
-        <h2 class="section-title">定格的温柔</h2>
-        <p style="color: #7d7d7d; margin-bottom: 25px; font-size: 0.95rem;">(点击任意照片可以放大观看哦 ✨)</p>
-        <div class="photo-grid" id="photoGrid"></div>
-        <div class="scroll-hint" onclick="document.getElementById('sec4').scrollIntoView();" style="position:static; margin-top:40px;">最后一步 ↓</div>
+        <div class="photo-blur-bg" id="photoBlurBg"></div>
+        
+        <h2 class="section-title" style="color: white; z-index: 5; margin-bottom: 10px;">定格的温柔</h2>
+        <p style="color: #ccc; margin-bottom: 30px; font-size: 0.95rem; z-index: 5;">(照片会自动平滑轮播移动，点击可放大哦 ✨)</p>
+        
+        <div class="slider-wrapper" id="sliderWrapper">
+            </div>
+        
+        <div class="scroll-hint" onclick="document.getElementById('sec4').scrollIntoView();" style="position:static; margin-top:40px; z-index: 5; color: #aaa;">最后一步 ↓</div>
     </div>
 
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
@@ -443,18 +478,23 @@
             }
         }
 
-        /* 🚀 动态高容错并行照片加载器 */
+        /* 🚀 巨幕轮播时光幻灯片系统（高容错并联加载） */
         const captions = [
             "那一天的温柔时刻 🌅", "藏在镜头里的甜 🍰", "执手走过的风景 ❄",
             "写下我们的故事 📝", "连背影都是心动 🌸", "最美好的时光 🌟",
             "爱在日常细节里 ✨", "手牵手走过四季 🍂", "未来的路一起走 🚀", "余生请多指教 ❤"
         ];
 
+        let loadedPhotos = []; // 存储实际加载成功的照片路径和描述
+        let currentSlideIndex = 0;
+
         function autoLoadPhotos() {
-            const grid = document.getElementById('photoGrid');
-            if (!grid) return;
+            const wrapper = document.getElementById('sliderWrapper');
+            const blurBg = document.getElementById('photoBlurBg');
+            if (!wrapper) return;
             
             const maxSearchCount = 20;
+            let checkCount = 0;
 
             for (let i = 1; i <= maxSearchCount; i++) {
                 (function(index) {
@@ -462,32 +502,74 @@
                     const currentSrc = `./photo${index}.jpg`;
                     
                     img.onload = function() {
-                        const item = document.createElement('div');
-                        item.className = 'photo-item';
-                        
-                        // 1. 无序微调初始角度
-                        const randomRotate = (Math.random() * 6 - 3).toFixed(1);
-                        item.style.setProperty('--r', `${randomRotate}deg`);
-                        
-                        // 2. ✨ 无序赋予不同的漂浮动画时长和延迟时间，让照片动起来不呆板
-                        const randomTime = (Math.random() * 2 + 3).toFixed(1) + 's';   // 3s ~ 5s 晃动一个周期
-                        const randomDelay = (Math.random() * -4).toFixed(1) + 's';     // 负数延迟让动画立刻错开启动
-                        item.style.setProperty('--float-time', randomTime);
-                        item.style.setProperty('--float-delay', randomDelay);
-                        
-                        item.setAttribute('onclick', `zoomPhoto('${currentSrc}')`);
-
                         const captionText = captions[index - 1] || "定格的温柔瞬间 ✨";
-                        item.innerHTML = `
-                            <img src="${currentSrc}" alt="Photo ${index}">
-                            <div class="photo-caption">${captionText}</div>
-                        `;
-                        grid.appendChild(item);
+                        
+                        // 将加载成功的照片加入到有效数组中
+                        loadedPhotos.push({ src: currentSrc, caption: captionText });
+                        
+                        checkCount++;
+                        if (checkCount === maxSearchCount) { startSlider(); }
                     };
-                    img.onerror = function() { };
+                    img.onerror = function() {
+                        checkCount++;
+                        if (checkCount === maxSearchCount) { startSlider(); }
+                    };
                     img.src = currentSrc;
                 })(i);
             }
+        }
+
+        // 初始化并启动动态幻灯片轮播
+        function startSlider() {
+            const wrapper = document.getElementById('sliderWrapper');
+            const blurBg = document.getElementById('photoBlurBg');
+            
+            if (loadedPhotos.length === 0) {
+                wrapper.innerHTML = "<p style='color:white;'>期待我们的合照...❤</p>";
+                return;
+            }
+
+            // 动态构建拍立得 DOM 节点
+            loadedPhotos.forEach((photo, idx) => {
+                const item = document.createElement('div');
+                item.className = `photo-item id-${idx}`;
+                item.setAttribute('onclick', `zoomPhoto('${photo.src}')`);
+                item.innerHTML = `
+                    <img src="${photo.src}" alt="Photo">
+                    <div class="photo-caption">${photo.caption}</div>
+                `;
+                wrapper.appendChild(item);
+            });
+
+            // 渲染第一张
+            renderSlides();
+
+            // 开启每 3.5 秒移动切换一次的定时器
+            setInterval(nextSlide, 3500);
+        }
+
+        function renderSlides() {
+            const blurBg = document.getElementById('photoBlurBg');
+            
+            loadedPhotos.forEach((_, idx) => {
+                const el = document.querySelector(`.photo-item.id-${idx}`);
+                if (!el) return;
+
+                // 清除之前的状态类
+                el.classList.remove('active', 'exit');
+
+                if (idx === currentSlideIndex) {
+                    el.classList.add('active'); // 当前照片正中显示
+                    blurBg.style.backgroundImage = `url('${loadedPhotos[idx].src}')`; // 虚化背景同步切换
+                } else if (idx === (currentSlideIndex - 1 + loadedPhotos.length) % loadedPhotos.length) {
+                    el.classList.add('exit'); // 上一张往左退场虚化
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % loadedPhotos.length;
+            renderSlides();
         }
         
         if (document.readyState === 'loading') {
