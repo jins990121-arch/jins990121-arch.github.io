@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我们的故事 · 嫁给我好吗？</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background-color: #faf8f5;
+            color: #4a4a4a;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-size: 20px;
+            animation: rotate 4s linear infinite;
+            animation-play-state: paused;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            text-align: center;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #ffe3e3 0%, #ffffff 100%);
+        }
+        .hero-title {
+            font-size: 2.5rem;
+            color: #d85a7fff;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #7d7d7d;
+            margin-bottom: 40px;
+        }
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.9rem;
+            color: #b5b5b5;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        .timer-section {
+            background-color: #ffffff;
+        }
+        .section-title {
+            font-size: 2rem;
+            color: #d85a7f;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: #d85a7f;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+        .timer-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .time-box {
+            background: #fff0f3;
+            padding: 20px;
+            border-radius: 12px;
+            min-width: 80px;
+            box-shadow: 0 4px 6px rgba(216, 90, 127, 0.1);
+        }
+        .time-num {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d85a7f;
+            display: block;
+        }
+        .time-unit {
+            font-size: 0.85rem;
+            color: #8c8c8c;
+        }
+        .timeline-section {
+            background-color: #faf8f5;
+            width: 100%;
+        }
+        .timeline {
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px 0;
+            text-align: left;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: #ffe3e3;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+        }
+        .timeline-item {
+            padding: 10px 30px;
+            position: relative;
+            background-color: inherit;
+            margin-bottom: 30px;
+        }
+        .timeline-item::after {
+            content: '❤';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: 12px;
+            top: 13px;
+            background-color: #faf8f5;
+            color: #d85a7f;
+            font-size: 14px;
+            text-align: center;
+            line-height: 20px;
+            z-index: 1;
+        }
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .timeline-date {
+            font-weight: bold;
+            color: #d85a7f;
+            margin-bottom: 8px;
+        }
+        .proposal-section {
+            background: linear-gradient(135deg, #ffffff 0%, #ffe3e3 100%);
+        }
+        .proposal-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(216, 90, 127, 0.15);
+            max-width: 500px;
+            width: 90%;
+        }
+        .btn-group {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            height: 60px;
+            position: relative;
+        }
+        .btn {
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .btn-yes {
+            background-color: #d85a7f;
+            color: white;
+            box-shadow: 0 5px 15px rgba(216, 90, 127, 0.3);
+        }
+        .btn-yes:hover {
+            transform: scale(1.05);
+            background-color: #c44d6f;
+        }
+        .btn-no {
+            background-color: #e0e0e0;
+            color: #666;
+            position: relative;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 85%;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .modal-title {
+            font-size: 1.8rem;
+            color: #d85a7f;
+            margin-bottom: 15px;
+        }
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgm" src="./bgm.mp3" loop></audio>
+    <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="section hero-section" id="sec1">
+        <h1 class="hero-title">Hey, 见字如面 ❤</h1>
+        <p class="hero-subtitle">有些深藏在代码里的浪漫，今天只想写给你听。</p>
+        <div class="scroll-hint" onclick="document.getElementById('sec2').scrollIntoView();">向下滑动 往下翻页 ↓</div>
+    </div>
+
+    <div class="section timer-section" id="sec2">
+        <h2 class="section-title">这是我们相恋的时光</h2>
+        <p style="color: #7d7d7d; margin-bottom: 20px;">从执手的那天起，时间便有了更温柔的意义：</p>
+        <div class="timer-container">
+            <div class="time-box"><span class="time-num" id="d">00</span><span class="time-unit">天</span></div>
+            <div class="time-box"><span class="time-num" id="h">00</span><span class="time-unit">时</span></div>
+            <div class="time-box"><span class="time-num" id="m">00</span><span class="time-unit">分</span></div>
+            <div class="time-box"><span class="time-num" id="s">00</span><span class="time-unit">秒</span></div>
+        </div>
+        <div class="scroll-hint" onclick="document.getElementById('sec3').scrollIntoView();" style="position:static; margin-top:50px;">继续向下滚动 ↓</div>
+    </div>
+
+    <div class="section timeline-section" id="sec3">
+        <h2 class="section-title">时光长廊</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2024年 4月 7日</div>
+                    <p>这一天，我们的故事悄然落笔。那一天的萤火虫很亮，而你的笑容比阳光还要耀眼。</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">美好的回忆</div>
+                    <p>陪你走过四季交替，牵着你的手走过熟悉的街道，每一刻我都无比确定，我想陪你走过余生的每一段路。</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">今天</div>
+                    <p>平淡的日子因为有你而变得闪闪发光，想和你一起把每一个“今天”变成美好的“昨天”。</p>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-hint" onclick="document.getElementById('sec4').scrollIntoView();" style="position:static; margin-top:30px;">最后一步 ↓</div>
+    </div>
+
+    <div class="section proposal-section" id="sec4">
+        <div class="proposal-card">
+            <h2 class="hero-title" style="font-size: 2rem;">最重要的一页</h2>
+            <p style="line-height: 1.8; color: #555; font-size: 1.05rem;">
+                世界很大，人潮汹涌。<br>
+                但何其幸运，能够遇见你、陪伴你、爱着你。<br>
+                未来的路，我想牵着你的手，一起去看更多的风景。<br>
+                <strong style="color: #d85a7f; display:block; margin-top:15px; font-size: 1.2rem;">你愿意嫁给我吗？</strong>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-yes" onclick="acceptProposal()">我愿意 ❤</button>
+                <button class="btn btn-no" id="nobtn" onmouseover="flyAway()" onclick="flyAway()">考虑一下</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h3 class="modal-title">🎉 耶！！</h3>
+            <p style="font-size: 1.1rem; line-height: 1.6; color: #444;">
+                谢谢你愿意包容我的笨拙与浪漫！<br>
+                我已经准备好了余生的守护与戒指，<br>
+                快抬头看看我吧！✨
+            </p>
+        </div>
+    </div>
+
+    <script>
+        /* 1. 恋爱计时器逻辑 (已精准定位到 2024年4月7日) */
+        const startDate = new Date('2024-04-07T00:00:00');
+        
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('d').innerText = days < 10 ? '0' + days : days;
+            document.getElementById('h').innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById('m').innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('s').innerText = seconds < 10 ? '0' + seconds : seconds;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        function toggleMusic() {
+            const audio = document.getElementById('bgm');
+            const btn = document.getElementById('musicBtn');
+            if (audio.paused) {
+                audio.play().catch(e => console.log("等待交互触发"));
+                btn.style.animationPlayState = 'running';
+            } else {
+                audio.pause();
+                btn.style.animationPlayState = 'paused';
+            }
+        }
+
+        function flyAway() {
+            const btn = document.getElementById('nobtn');
+            const x = Math.random() * 160 - 80;
+            const y = Math.random() * 80 - 40;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        function acceptProposal() {
+            document.getElementById('successModal').style.display = 'flex';
+            startConfetti();
+        }
+
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 8 + 5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1.5 + 1;
+                this.color = `rgba(216, 90, 127, ${Math.random() * 0.4 + 0.2})`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.y > canvas.height) {
+                    this.y = -10;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.bezierCurveTo(this.x - this.size/2, this.y - this.size/2, this.x - this.size, this.y + this.size/3, this.x, this.y + this.size);
+                ctx.bezierCurveTo(this.x + this.size, this.y + this.size/3, this.x + this.size/2, this.y - this.size/2, this.x, this.y);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 40; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        let isConfetti = false;
+        function startConfetti() {
+            if(isConfetti) return;
+            isConfetti = true;
+            for (let i = 0; i < 150; i++) {
+                let p = new Particle();
+                p.y = Math.random() * canvas.height;
+                p.speedY = Math.random() * 3 + 2;
+                p.speedX = Math.random() * 6 - 3;
+                particles.push(p);
+            }
+        }
+    </script>
+</body>
+</html>
