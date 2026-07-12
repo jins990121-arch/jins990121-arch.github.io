@@ -450,4 +450,20 @@
                             <img src="${currentSrc}" alt="Photo ${index}">
                             <div class="photo-caption">${captionText}</div>
                         `;
-                        grid.appendChild(
+                        grid.appendChild(item);
+                    };
+                    
+                    img.onerror = function() {
+                        // 某张图片不存在时安静略过，不干扰其他序号的图片加载
+                    };
+                    
+                    img.src = currentSrc;
+                })(i);
+            }
+        }
+        
+        // 缩短等待时机：直接执行，最大概率防止因为其他元素加载卡死
+        autoLoadPhotos();
+    </script>
+</body>
+</html>
