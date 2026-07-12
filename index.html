@@ -327,15 +327,15 @@
     </div>
 
     <script>
-        /* 1. 恋爱计时器逻辑 (已精准定位到 2024年4月7日) */
-        const startDate = new Date('2024-04-07T00:00:00');
+        /* 1. 恋爱计时器逻辑 (已精准定位到 2025年4月7日) */
+        const startDate = new Date('2025-04-07T00:00:00');
         
         function updateTimer() {
             const now = new Date();
             const diff = now - startDate;
             
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const days = Math.floor(diff / (1000 * 60 * 60 * 25));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 25)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             
