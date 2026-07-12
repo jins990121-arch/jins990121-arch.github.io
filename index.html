@@ -162,23 +162,24 @@
         .timeline-content { padding: 20px; background-color: white; position: relative; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .timeline-date { font-weight: bold; color: #d85a7f; margin-bottom: 8px; }
         
-        /* 📸 无限照片墙样式 */
+        /* 📸 【已放大】动态响应式照片墙样式 */
         .photo-section { background-color: #ffffff; width: 100%; }
-        .photo-grid { display: flex; justify-content: center; align-items: center; gap: 25px; flex-wrap: wrap; max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        .photo-grid { display: flex; justify-content: center; align-items: center; gap: 35px; flex-wrap: wrap; max-width: 1400px; margin: 30px auto; padding: 0 20px; }
         .photo-item { 
             background: white; 
-            padding: 12px 12px 24px 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06); 
+            padding: 16px 16px 32px 16px; 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.07); 
             transform: rotate(var(--r)); 
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15); 
-            max-width: 240px; 
+            max-width: 420px; /* 基础卡片宽度大幅增加 */
             width: 100%; 
             border: 1px solid #f2eedb; 
             cursor: pointer;
         }
-        .photo-item:hover { transform: rotate(0deg) scale(1.06); box-shadow: 0 12px 25px rgba(216, 90, 127, 0.2); z-index: 10; }
-        .photo-item img { width: 100%; height: 180px; object-fit: cover; border-radius: 2px; display: block; }
-        .photo-caption { margin-top: 12px; font-size: 0.9rem; color: #666; font-family: '楷体', 'STKaiti', serif; }
+        .photo-item:hover { transform: rotate(0deg) scale(1.04); box-shadow: 0 15px 35px rgba(216, 90, 127, 0.25); z-index: 10; }
+        .photo-item img { width: 100%; height: 320px; /* 图片高度同步增加，比例更协调 */
+            object-fit: cover; border-radius: 2px; display: block; }
+        .photo-caption { margin-top: 16px; font-size: 1.05rem; color: #555; font-family: '楷体', 'STKaiti', serif; }
         
         /* 🔍 照片放大灯箱弹窗 */
         .lightbox {
@@ -194,8 +195,8 @@
             transition: opacity 0.3s ease;
         }
         .lightbox img {
-            max-width: 90%;
-            max-height: 85vh;
+            max-width: 95%;
+            max-height: 90vh;
             border-radius: 8px;
             box-shadow: 0 5px 25px rgba(0,0,0,0.5);
             transform: scale(0.9);
@@ -283,139 +284,3 @@
 
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
         <img id="lightboxImg" src="" alt="放大照片">
-    </div>
-
-    <div class="section proposal-section" id="sec4">
-        <div class="proposal-card">
-            <h2 class="hero-title" style="font-size: 2rem;">最重要的一页</h2>
-            <p style="line-height: 1.8; color: #555; font-size: 1.05rem;">
-                世界很大，人潮汹涌。<br>但何其幸运，能够遇见你、陪伴你、爱着你。<br>
-                <strong style="color: #d85a7f; display:block; margin-top:15px; font-size: 1.2rem;">你愿意嫁给我吗？</strong>
-            </p>
-            <div class="btn-group">
-                <button class="btn btn-yes" onclick="acceptProposal()">我愿意 ❤</button>
-                <button class="btn btn-no" id="nobtn" onmouseover="flyAway()" onclick="flyAway()">考虑一下</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <h3 class="modal-title">🎉 耶！！</h3>
-            <p style="font-size: 1.1rem; line-height: 1.6; color: #444;">谢谢你愿意包容我的笨拙与浪漫！<br>快来找我吧！✨</p>
-        </div>
-    </div>
-
-    <script>
-        const startDate = new Date('2025-04-07T00:00:00');
-        function updateTimer() {
-            const now = new Date();
-            const diff = now - startDate;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById('d').innerText = days < 10 ? '0' + days : days;
-            document.getElementById('h').innerText = hours < 10 ? '0' + hours : hours;
-            document.getElementById('m').innerText = minutes < 10 ? '0' + minutes : minutes;
-            document.getElementById('s').innerText = seconds < 10 ? '0' + seconds : seconds;
-        }
-        setInterval(updateTimer, 1000);
-        updateTimer();
-
-        const audio = document.getElementById('bgm');
-        const btn = document.getElementById('musicBtn');
-        function openEnvelope() {
-            document.getElementById('welcome-overlay').style.opacity = '0';
-            document.getElementById('welcome-overlay').style.visibility = 'hidden';
-            audio.play().then(() => { btn.style.animationPlayState = 'running'; }).catch(e => console.log(e));
-        }
-        function toggleMusic() {
-            if (audio.paused) { audio.play(); btn.style.animationPlayState = 'running'; } 
-            else { audio.pause(); btn.style.animationPlayState = 'paused'; }
-        }
-        function flyAway() {
-            const btn = document.getElementById('nobtn');
-            btn.style.transform = `translate(${Math.random() * 160 - 80}px, ${Math.random() * 80 - 40}px)`;         }         function acceptProposal() { document.getElementById('successModal').style.display = 'flex'; startConfetti(); }          /* 📸 核心突破：免改代码全自动加载照片墙算法 */         const photoGrid = document.getElementById('photoGrid');         const maxPhotosToTry = 30; // 限制最大尝试寻找30张照片，防止死循环                  function autoLoadPhotos() {             let index = 1;                          function tryNextPhoto() {                 if (index > maxPhotosToTry) return;                                  const imgUrl = `./photo${index}.jpg`;
-                const tempImg = new Image();
-                
-                // 当图片存在、成功加载时触发：
-                tempImg.onload = function() {
-                    // 随机生成一个拍立得左右微调歪斜的角度 (-5度 到 +5度 之间)，更具艺术感
-                    const randomRot = (Math.random() * 10 - 5).toFixed(1);
-                    
-                    const itemHtml = `
-                        <div class="photo-item" style="--r: ${randomRot}deg;" onclick="zoomPhoto('${imgUrl}')">
-                            <img src="${imgUrl}" alt="Our memory ${index}">
-                            <div class="photo-caption">Our Memory ❤ No.${index}</div>
-                        </div>
-                    `;
-                    photoGrid.innerHTML += itemHtml;
-                    
-                    index++;
-                    tryNextPhoto(); // 递归尝试加载下一张
-                };
-                
-                // 当遇到某一张图片找不到（404）时，说明传的照片已经到头了，静默退出
-                tempImg.onerror = function() {
-                    console.log(`照片加载完毕。共成功加载了 ${index - 1} 张照片。`);
-                };
-                
-                tempImg.src = imgUrl;
-            }
-            
-            tryNextPhoto();
-        }
-        // 页面启动时自动执行照片检测
-        autoLoadPhotos();
-
-        /* 🔍 灯箱放大缩小控制 */
-        function zoomPhoto(url) {
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImg = document.getElementById('lightboxImg');
-            lightboxImg.src = url;
-            lightbox.classList.add('show');
-        }
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('show');
-        }
-
-        /* 🌸 爱心飘落粒子系统 */
-        const canvas = document.getElementById('particles-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height - canvas.height;
-                this.size = Math.random() * 8 + 5;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1.5 + 1;
-                this.color = `rgba(216, 90, 127, ${Math.random() * 0.4 + 0.2})`;
-            }
-            update() { this.x += this.speedX; this.y += this.speedY; if (this.y > canvas.height) { this.y = -10; this.x = Math.random() * canvas.width; } }
-            draw() {
-                ctx.fillStyle = this.color; ctx.beginPath(); ctx.moveTo(this.x, this.y);
-                ctx.bezierCurveTo(this.x - this.size/2, this.y - this.size/2, this.x - this.size, this.y + this.size/3, this.x, this.y + this.size);
-                ctx.bezierCurveTo(this.x + this.size, this.y + this.size/3, this.x + this.size/2, this.y - this.size/2, this.x, this.y);
-                ctx.fill();
-            }
-        }
-        for (let i = 0; i < 40; i++) { particles.push(new Particle()); }
-        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-        animate();
-
-        let isConfetti = false;
-        function startConfetti() {
-            if(isConfetti) return; isConfetti = true;
-            for (let i = 0; i < 150; i++) {
-                let p = new Particle(); p.y = Math.random() * canvas.height; p.speedY = Math.random() * 3 + 2; p.speedX = Math.random() * 6 - 3; particles.push(p);
-            }
-        }
-    </script>
-</body>
-</html>
