@@ -17,7 +17,7 @@
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
-        /* 💌 仪式感爆棚的“开启信封”遮罩层 */
+        /* 💌 开启信封遮罩层 */
         #welcome-overlay {
             position: fixed;
             top: 0;
@@ -66,8 +66,8 @@
             font-size: 1.1rem;
             box-shadow: 0 5px 15px rgba(216, 90, 127, 0.4);
             font-weight: bold;
+            border: none;
         }
-
         /* 背景音乐控制按钮 */
         .music-btn {
             position: fixed;
@@ -91,7 +91,6 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        /* 满屏区块通用样式 */
         .section {
             min-height: 100vh;
             display: flex;
@@ -129,9 +128,7 @@
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
         }
-        .timer-section {
-            background-color: #ffffff;
-        }
+        .timer-section { background-color: #ffffff; }
         .section-title {
             font-size: 2rem;
             color: #d85a7f;
@@ -147,11 +144,7 @@
             margin: 10px auto 0;
             border-radius: 2px;
         }
-        .timer-container {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
+        .timer-container { display: flex; gap: 15px; margin-top: 20px; }
         .time-box {
             background: #fff0f3;
             padding: 20px;
@@ -159,171 +152,193 @@
             min-width: 80px;
             box-shadow: 0 4px 6px rgba(216, 90, 127, 0.1);
         }
-        .time-num {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #d85a7f;
-            display: block;
-        }
-        .time-unit {
-            font-size: 0.85rem;
-            color: #8c8c8c;
-        }
-        .timeline-section {
-            background-color: #faf8f5;
-            width: 100%;
-        }
-        .timeline {
-            position: relative;
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 20px 0;
-            text-align: left;
-        }
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            background-color: #ffe3e3;
-            top: 0;
-            bottom: 0;
-            left: 20px;
-        }
-        .timeline-item {
-            padding: 10px 30px;
-            position: relative;
-            background-color: inherit;
-            margin-bottom: 30px;
-        }
-        .timeline-item::after {
-            content: '❤';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            left: 12px;
-            top: 13px;
-            background-color: #faf8f5;
-            color: #d85a7f;
-            font-size: 14px;
-            text-align: center;
-            line-height: 20px;
-            z-index: 1;
-        }
-        .timeline-content {
-            padding: 20px;
-            background-color: white;
-            position: relative;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .timeline-date {
-            font-weight: bold;
-            color: #d85a7f;
-            margin-bottom: 8px;
-        }
+        .time-num { font-size: 2rem; font-weight: bold; color: #d85a7f; display: block; }
+        .time-unit { font-size: 0.85rem; color: #8c8c8c; }
+        .timeline-section { background-color: #faf8f5; width: 100%; }
+        .timeline { position: relative; max-width: 700px; margin: 0 auto; padding: 20px 0; text-align: left; }
+        .timeline::after { content: ''; position: absolute; width: 2px; background-color: #ffe3e3; top: 0; bottom: 0; left: 20px; }
+        .timeline-item { padding: 10px 30px; position: relative; background-color: inherit; margin-bottom: 30px; }
+        .timeline-item::after { content: '❤'; position: absolute; width: 20px; height: 20px; left: 12px; top: 13px; background-color: #faf8f5; color: #d85a7f; font-size: 14px; text-align: center; line-height: 20px; z-index: 1; }
+        .timeline-content { padding: 20px; background-color: white; position: relative; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .timeline-date { font-weight: bold; color: #d85a7f; margin-bottom: 8px; }
+        
+        /* 📸 照片墙样式 */
+        .photo-section { background-color: #ffffff; width: 100%; }
+        .photo-grid { display: flex; justify-content: center; align-items: center; gap: 25px; flex-wrap: wrap; max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .photo-item { background: white; padding: 12px 12px 35px 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.08); transform: rotate(var(--r)); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 260px; width: 100%; border: 1px solid #f0f0f0; }
+        .photo-item:hover { transform: rotate(0deg) scale(1.08); box-shadow: 0 12px 30px rgba(216, 90, 127, 0.25); z-index: 10; }
+        .photo-item img { width: 100%; height: auto; border-radius: 2px; display: block; }
+        .photo-caption { margin-top: 15px; font-size: 0.95rem; color: #555; font-family: '楷体', 'STKaiti', serif; font-weight: bold; }
+        
+        .proposal-section { background: linear-gradient(135deg, #ffffff 0%, #ffe3e3 100%); }
+        .proposal-card { background: rgba(255, 255, 255, 0.9); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(216, 90, 127, 0.15); max-width: 500px; width: 90%; }
+        .btn-group { margin-top: 40px; display: flex; justify-content: center; align-items: center; gap: 30px; height: 60px; position: relative; }
+        .btn { padding: 12px 35px; font-size: 1.1rem; border: none; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; outline: none; }
+        .btn-yes { background-color: #d85a7f; color: white; box-shadow: 0 5px 15px rgba(216, 90, 127, 0.3); }
+        .btn-yes:hover { transform: scale(1.05); background-color: #c44d6f; }
+        .btn-no { background-color: #e0e0e0; color: #666; position: relative; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 40px; border-radius: 15px; text-align: center; max-width: 400px; width: 85%; box-shadow: 0 5px 25px rgba(0,0,0,0.2); position: relative; }
+        .modal-title { font-size: 1.8rem; color: #d85a7f; margin-bottom: 15px; }
+        #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+    </style>
+</head>
+<body>
 
-        /* 📸 复古拍立得照片墙样式 */
-        .photo-section {
-            background-color: #ffffff;
-            width: 100%;
-        }
-        .photo-grid {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            flex-wrap: wrap;
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-        .photo-item {
-            background: white;
-            padding: 12px 12px 35px 12px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-            transform: rotate(var(--r));
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 260px;
-            width: 100%;
-            border: 1px solid #f0f0f0;
-        }
-        .photo-item:hover {
-            transform: rotate(0deg) scale(1.08);
-            box-shadow: 0 12px 30px rgba(216, 90, 127, 0.25);
-            z-index: 10;
-        }
-        .photo-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 2px;
-            display: block;
-        }
-        .photo-caption {
-            margin-top: 15px;
-            font-size: 0.95rem;
-            color: #555;
-            font-family: '楷体', 'STKaiti', serif;
-            font-weight: bold;
-        }
+    <div id="welcome-overlay" onclick="openEnvelope()">
+        <div class="envelope-card">
+            <div class="envelope-text">Hey, Lumina<br>见字如面 ❤</div>
+            <p style="color: #8c8c8c; font-size: 0.95rem; margin-bottom: 25px;">内有给你的秘密，请点击拆封</p>
+            <button class="open-btn">点击开启 ✨</button>
+        </div>
+    </div>
 
-        .proposal-section {
-            background: linear-gradient(135deg, #ffffff 0%, #ffe3e3 100%);
+    <audio id="bgm" src="./bgm.mp3" loop></audio>
+    <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="section hero-section" id="sec1">
+        <h1 class="hero-title">Hey, Lumina 见字如面 ❤</h1>
+        <p class="hero-subtitle">有些深藏在代码里的浪漫，今天只想 write 给听。</p>
+        <div class="scroll-hint" onclick="document.getElementById('sec2').scrollIntoView();">向下滑动 往下翻页 ↓</div>
+    </div>
+
+    <div class="section timer-section" id="sec2">
+        <h2 class="section-title">这是我们相恋的时光</h2>
+        <div class="timer-container">
+            <div class="time-box"><span class="time-num" id="d">00</span><span class="time-unit">天</span></div>
+            <div class="time-box"><span class="time-num" id="h">00</span><span class="time-unit">时</span></div>
+            <div class="time-box"><span class="time-num" id="m">00</span><span class="time-unit">分</span></div>
+            <div class="time-box"><span class="time-num" id="s">00</span><span class="time-unit">秒</span></div>
+        </div>
+        <div class="scroll-hint" onclick="document.getElementById('sec3').scrollIntoView();" style="position:static; margin-top:50px;">继续向下滚动 ↓</div>
+    </div>
+
+    <div class="section timeline-section" id="sec3">
+        <h2 class="section-title">时光长廊</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2025年 4月 7日</div>
+                    <p>这一天，我们的故事悄然落笔。那一天的萤火虫很亮，而你的笑容比阳光还要耀眼。</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">美好的回忆</div>
+                    <p>陪你走过四季交替，牵着你的手走过熟悉的街道，每一刻我都无比确定，我想陪你走过余生的每一段路。</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">今天</div>
+                    <p>平淡的日子因为有你而变得闪闪发光。</p>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-hint" onclick="document.getElementById('sec-photo').scrollIntoView();" style="position:static; margin-top:30px;">看看我们的照片 ↓</div>
+    </div>
+
+    <div class="section photo-section" id="sec-photo">
+        <h2 class="section-title">定格的温柔</h2>
+        <div class="photo-grid">
+            <div class="photo-item" style="--r: -4deg;"><img src="./photo1.jpg" alt="1"><div class="photo-caption">那一天的温柔时刻 🌅</div></div>
+            <div class="photo-item" style="--r: 3deg;"><img src="./photo2.jpg" alt="2"><div class="photo-caption">藏在镜头里的甜 🍰</div></div>
+            <div class="photo-item" style="--r: -2deg;"><img src="./photo3.jpg" alt="3"><div class="photo-caption">执手走过的风景 ❄</div></div>
+        </div>
+        <div class="scroll-hint" onclick="document.getElementById('sec4').scrollIntoView();" style="position:static; margin-top:40px;">最后一步 ↓</div>
+    </div>
+
+    <div class="section proposal-section" id="sec4">
+        <div class="proposal-card">
+            <h2 class="hero-title" style="font-size: 2rem;">最重要的一页</h2>
+            <p style="line-height: 1.8; color: #555; font-size: 1.05rem;">
+                世界很大，人潮汹涌。<br>但何其幸运，能够遇见你、陪伴你、爱着你。<br>
+                <strong style="color: #d85a7f; display:block; margin-top:15px; font-size: 1.2rem;">你愿意嫁给我吗？</strong>
+            </p>
+            <div class="btn-group">
+                <button class="btn btn-yes" onclick="acceptProposal()">我愿意 ❤</button>
+                <button class="btn btn-no" id="nobtn" onmouseover="flyAway()" onclick="flyAway()">考虑一下</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h3 class="modal-title">🎉 耶！！</h3>
+            <p style="font-size: 1.1rem; line-height: 1.6; color: #444;">谢谢你愿意包容我的笨拙与浪漫！<br>快来找我吧！✨</p>
+        </div>
+    </div>
+
+    <script>
+        const startDate = new Date('2025-04-07T00:00:00');
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById('d').innerText = days < 10 ? '0' + days : days;
+            document.getElementById('h').innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById('m').innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('s').innerText = seconds < 10 ? '0' + seconds : seconds;
         }
-        .proposal-card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(216, 90, 127, 0.15);
-            max-width: 500px;
-            width: 90%;
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        const audio = document.getElementById('bgm');
+        const btn = document.getElementById('musicBtn');
+        function openEnvelope() {
+            document.getElementById('welcome-overlay').style.opacity = '0';
+            document.getElementById('welcome-overlay').style.visibility = 'hidden';
+            audio.play().then(() => { btn.style.animationPlayState = 'running'; }).catch(e => console.log(e));
         }
-        .btn-group {
-            margin-top: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            height: 60px;
-            position: relative;
+        function toggleMusic() {
+            if (audio.paused) { audio.play(); btn.style.animationPlayState = 'running'; } 
+            else { audio.pause(); btn.style.animationPlayState = 'paused'; }
         }
-        .btn {
-            padding: 12px 35px;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            outline: none;
+        function flyAway() {
+            const btn = document.getElementById('nobtn');
+            btn.style.transform = `translate(${Math.random() * 160 - 80}px, ${Math.random() * 80 - 40}px)`;
         }
-        .btn-yes {
-            background-color: #d85a7f;
-            color: white;
-            box-shadow: 0 5px 15px rgba(216, 90, 127, 0.3);
+        function acceptProposal() { document.getElementById('successModal').style.display = 'flex'; startConfetti(); }
+
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 8 + 5;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1.5 + 1;
+                this.color = `rgba(216, 90, 127, ${Math.random() * 0.4 + 0.2})`;
+            }
+            update() { this.x += this.speedX; this.y += this.speedY; if (this.y > canvas.height) { this.y = -10; this.x = Math.random() * canvas.width; } }
+            draw() {
+                ctx.fillStyle = this.color; ctx.beginPath(); ctx.moveTo(this.x, this.y);
+                ctx.bezierCurveTo(this.x - this.size/2, this.y - this.size/2, this.x - this.size, this.y + this.size/3, this.x, this.y + this.size);
+                ctx.bezierCurveTo(this.x + this.size, this.y + this.size/3, this.x + this.size/2, this.y - this.size/2, this.x, this.y);
+                ctx.fill();
+            }
         }
-        .btn-yes:hover {
-            transform: scale(1.05);
-            background-color: #c44d6f;
+        for (let i = 0; i < 40; i++) { particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        animate();
+
+        let isConfetti = false;
+        function startConfetti() {
+            if(isConfetti) return; isConfetti = true;
+            for (let i = 0; i < 150; i++) {
+                let p = new Particle(); p.y = Math.random() * canvas.height; p.speedY = Math.random() * 3 + 2; p.speedX = Math.random() * 6 - 3; particles.push(p);
+            }
         }
-        .btn-no {
-            background-color: #e0e0e0;
-            color: #666;
-            position: relative;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 400
+    </script>
+</body>
+</html>
