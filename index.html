@@ -166,18 +166,40 @@
         /* 📸 大图版照片墙样式 */
         .photo-section { background-color: #ffffff; width: 100%; }
         .photo-grid { display: flex; justify-content: center; align-items: center; gap: 35px; flex-wrap: wrap; max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        
+        /* ✨ 照片赋予动态漂浮动画效果 */
         .photo-item { 
             background: white; 
             padding: 16px 16px 32px 16px; 
             box-shadow: 0 6px 20px rgba(0,0,0,0.07); 
-            transform: rotate(var(--r, 0deg)); 
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15); 
+            transform: rotate(var(--r, 0deg)) translateY(0); 
+            /* 使用带有贝塞尔曲线的过渡，让摆动动画过渡更丝滑 */
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); 
             max-width: 420px; 
             width: 100%; 
             border: 1px solid #f2eedb; 
             cursor: pointer;
+            position: relative;
+            /* 绑定温柔漂浮呼吸动画，动画时长和延迟由 JS 无序赋予，避免动作完全整齐划一 */
+            animation: photoFloat var(--float-time, 4s) ease-in-out infinite alternate;
+            animation-delay: var(--float-delay, 0s);
         }
-        .photo-item:hover { transform: rotate(0deg) scale(1.04); box-shadow: 0 15px 35px rgba(216, 90, 127, 0.25); z-index: 10; }
+        
+        /* 浮动晃动动画微调效果 */
+        @keyframes photoFloat {
+            0% { transform: rotate(var(--r, 0deg)) translateY(0px) translateX(0px); }
+            50% { transform: rotate(calc(var(--r, 0deg) + 0.8deg)) translateY(-6px) translateX(2px); }
+            100% { transform: rotate(calc(var(--r, 0deg) - 0.8deg)) translateY(-12px) translateX(-2px); }
+        }
+
+        /* 鼠标悬停交互：动画暂停、放正、放大、加深阴影 */
+        .photo-item:hover { 
+            animation-play-state: paused; /* 鼠标放上去时暂停晃动，方便看清 */
+            transform: rotate(0deg) scale(1.06) translateY(-5px); 
+            box-shadow: 0 20px 38px rgba(216, 90, 127, 0.22); 
+            z-index: 10; 
+        }
+        
         .photo-item img { width: 100%; height: 320px; object-fit: cover; border-radius: 2px; display: block; }
         .photo-caption { margin-top: 16px; font-size: 1.05rem; color: #555; font-family: '楷体', 'STKaiti', serif; }
         
@@ -308,7 +330,6 @@
     </div>
 
     <script>
-        // 确保一开始计时器和动画基础逻辑可用
         const startDate = new Date('2025-04-07T00:00:00');
         function updateTimer() {
             const now = new Date();
@@ -339,7 +360,7 @@
             audio.play().then(() => { 
                 btn.style.animationPlayState = 'running'; 
             }).catch(e => {
-                console.log("音频自动播放被拦截，需手动点击右上角图标");
+                console.log("音频自动播放被拦截");
             });
         }
         
@@ -422,7 +443,7 @@
             }
         }
 
-        /* 🚀 容错加载逻辑：严密包裹在安全执行时机中，绝不阻塞网页加载 */
+        /* 🚀 动态高容错并行照片加载器 */
         const captions = [
             "那一天的温柔时刻 🌅", "藏在镜头里的甜 🍰", "执手走过的风景 ❄",
             "写下我们的故事 📝", "连背影都是心动 🌸", "最美好的时光 🌟",
@@ -431,9 +452,9 @@
 
         function autoLoadPhotos() {
             const grid = document.getElementById('photoGrid');
-            if (!grid) return; // 安全阀门：若容器还没生成，直接返回，绝不报错卡死
+            if (!grid) return;
             
-            const maxSearchCount = 20; // 自动并行探测 1 到 20 张
+            const maxSearchCount = 20;
 
             for (let i = 1; i <= maxSearchCount; i++) {
                 (function(index) {
@@ -443,8 +464,17 @@
                     img.onload = function() {
                         const item = document.createElement('div');
                         item.className = 'photo-item';
+                        
+                        // 1. 无序微调初始角度
                         const randomRotate = (Math.random() * 6 - 3).toFixed(1);
                         item.style.setProperty('--r', `${randomRotate}deg`);
+                        
+                        // 2. ✨ 无序赋予不同的漂浮动画时长和延迟时间，让照片动起来不呆板
+                        const randomTime = (Math.random() * 2 + 3).toFixed(1) + 's';   // 3s ~ 5s 晃动一个周期
+                        const randomDelay = (Math.random() * -4).toFixed(1) + 's';     // 负数延迟让动画立刻错开启动
+                        item.style.setProperty('--float-time', randomTime);
+                        item.style.setProperty('--float-delay', randomDelay);
+                        
                         item.setAttribute('onclick', `zoomPhoto('${currentSrc}')`);
 
                         const captionText = captions[index - 1] || "定格的温柔瞬间 ✨";
@@ -460,7 +490,6 @@
             }
         }
         
-        // 🔒 终极修复：把加载函数死死绑定在 DOM 树加载完毕后，彻底解决空白页
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', autoLoadPhotos);
         } else {
